@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:meta/meta.dart';
 
-import '_functions_io.dart' if (dart.library.html) '_functions_web.dart';
 import 'builder.dart';
 import 'style_sheet.dart';
 
