@@ -39,7 +39,7 @@ class MarkdownStyleSheet {
     this.codeblockPadding,
     this.codeblockDecoration,
     this.horizontalRuleDecoration,
-    this.textScaleFactor,
+    this.textScaleFactor = 1.0,
   }) : _styles = <String, TextStyle>{
           'a': a,
           'p': p,
