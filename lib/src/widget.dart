@@ -40,9 +40,8 @@ abstract class SyntaxHighlighter {
 ///
 /// [material] - create MarkdownStyleSheet based on MaterialTheme
 /// [cupertino] - create MarkdownStyleSheet based on CupertinoTheme
-/// [platform] - create MarkdownStyleSheet based on the Platform where the
-/// is running on. Material on Android and Cupertino on iOS
-enum MarkdownStyleSheetBaseTheme { material, cupertino, platform }
+/// [automatic] - create MarkdownStyleSheet based on what is app using
+enum MarkdownStyleSheetBaseTheme { material, cupertino, automatic }
 
 /// A base class for widgets that parse and display Markdown.
 ///
@@ -63,7 +62,7 @@ abstract class MarkdownWidget extends StatefulWidget {
     @required this.data,
     this.selectable = false,
     this.styleSheet,
-    this.styleSheetTheme = MarkdownStyleSheetBaseTheme.material,
+    this.styleSheetTheme,
     this.syntaxHighlighter,
     this.onTapLink,
     this.imageDirectory,
@@ -90,7 +89,7 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Setting to specify base theme for MarkdownStyleSheet
   ///
-  /// Default to [MarkdownStyleSheetBaseTheme.material]
+  /// Default to [MarkdownStyleSheetBaseTheme.automatic]
   final MarkdownStyleSheetBaseTheme styleSheetTheme;
 
   /// The syntax highlighter used to color text in `pre` elements.
@@ -152,7 +151,24 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
   }
 
   void _parseMarkdown() {
-    final MarkdownStyleSheet fallbackStyleSheet = kFallbackStyle(context, widget.styleSheetTheme);
+    MarkdownStyleSheet fallbackStyleSheet;
+    switch (widget.styleSheetTheme) {
+      case MarkdownStyleSheetBaseTheme.material:
+        fallbackStyleSheet = MarkdownStyleSheet.fromTheme(Theme.of(context));
+        break;
+      case MarkdownStyleSheetBaseTheme.cupertino:
+        fallbackStyleSheet = MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
+        break;
+      case MarkdownStyleSheetBaseTheme.automatic:
+      default:
+        final ThemeData materialTheme = Theme.of(context, shadowThemeOnly: true);
+        if (materialTheme == null) {
+          fallbackStyleSheet = MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
+        } else {
+          fallbackStyleSheet = MarkdownStyleSheet.fromTheme(Theme.of(context));
+        }
+        break;
+    }
     final MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
 
     _disposeRecognizers();
