@@ -576,7 +576,7 @@ void main() {
       expect(find.byType(SelectableText), findsNWidgets(2));
     });
 
-    testWidgets(' - style', (WidgetTester tester) async {
+    testWidgets(' - styleSheet', (WidgetTester tester) async {
       final ThemeData theme = ThemeData.light().copyWith(textTheme: textTheme);
 
       final MarkdownStyleSheet style1 = MarkdownStyleSheet.fromTheme(theme);
@@ -593,6 +593,16 @@ void main() {
       final RichText text2 = tester.widget(find.byType(RichText));
 
       expect(text1.text, isNot(text2.text));
+    });
+
+    testWidgets(' - styleSheetTheme', (WidgetTester tester) async {
+      await tester.pumpWidget(_boilerplate(CupertinoTheme(
+        data: CupertinoThemeData(),
+        child: Markdown(data: '[title](url)'),
+      )));
+
+      final RichText text1 = tester.widget(find.byType(RichText));
+      expect(text1.text.style.color, CupertinoColors.link);
     });
 
     testWidgets(' - imageBuilder', (WidgetTester tester) async {
@@ -667,11 +677,11 @@ void main() {
     testWidgets('create based on which theme', (WidgetTester tester) async {
       await tester.pumpWidget(_boilerplate(const Markdown(
         data: '[title](url)',
-        styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
+        styleSheetTheme: MarkdownStyleSheetBaseTheme.material,
       )));
 
       final RichText widget = tester.widget(find.byType(RichText));
-      expect(widget.text.style.color, CupertinoColors.link);
+      expect(widget.text.style.color, Colors.blue);
     });
   });
 
