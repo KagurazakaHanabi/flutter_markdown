@@ -153,7 +153,12 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
 
   void _parseMarkdown() {
     final MarkdownStyleSheet fallbackStyleSheet = kFallbackStyle(context, widget.styleSheetTheme);
-    final MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
+    MarkdownStyleSheet styleSheet = fallbackStyleSheet.merge(widget.styleSheet);
+    if (styleSheet.textScaleFactor == null) {
+      styleSheet = styleSheet.copyWith(
+        textScaleFactor: MediaQuery.textScaleFactorOf(context),
+      );
+    }
 
     _disposeRecognizers();
 
