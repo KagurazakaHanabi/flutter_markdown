@@ -2,15 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:html'; // ignore: avoid_web_libraries_in_flutter
-
-import 'package:flutter/cupertino.dart' show CupertinoTheme;
-import 'package:flutter/material.dart' show Theme;
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as p;
-
-import 'style_sheet.dart';
-import 'widget.dart';
 
 typedef Widget ImageBuilder(Uri uri, String imageDirectory, double width, double height);
 
@@ -34,24 +27,6 @@ final ImageBuilder kDefaultImageBuilder = (
       String src = p.join(p.current, fileUri.toString());
       return Image.network(src, width: width, height: height);
     }
-  }
-};
-
-final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme) kFallbackStyle = (
-  BuildContext context,
-  MarkdownStyleSheetBaseTheme baseTheme,
-) {
-  switch (baseTheme) {
-    case MarkdownStyleSheetBaseTheme.platform:
-      final String userAgent = window.navigator.userAgent;
-      return userAgent.contains('Mac OS X')
-          ? MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context))
-          : MarkdownStyleSheet.fromTheme(Theme.of(context));
-    case MarkdownStyleSheetBaseTheme.cupertino:
-      return MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
-    case MarkdownStyleSheetBaseTheme.material:
-    default:
-      return MarkdownStyleSheet.fromTheme(Theme.of(context));
   }
 };
 

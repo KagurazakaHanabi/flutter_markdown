@@ -4,12 +4,7 @@
 
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart' show CupertinoTheme;
-import 'package:flutter/material.dart' show Theme;
 import 'package:flutter/widgets.dart';
-
-import 'style_sheet.dart';
-import 'widget.dart';
 
 typedef Widget ImageBuilder(Uri uri, String imageDirectory, double width, double height);
 
@@ -32,23 +27,6 @@ final ImageBuilder kDefaultImageBuilder = (
     } else {
       return Image.file(File.fromUri(fileUri), width: width, height: height);
     }
-  }
-};
-
-final MarkdownStyleSheet Function(BuildContext, MarkdownStyleSheetBaseTheme) kFallbackStyle = (
-  BuildContext context,
-  MarkdownStyleSheetBaseTheme baseTheme,
-) {
-  switch (baseTheme) {
-    case MarkdownStyleSheetBaseTheme.platform:
-      return (Platform.isIOS || Platform.isMacOS)
-          ? MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context))
-          : MarkdownStyleSheet.fromTheme(Theme.of(context));
-    case MarkdownStyleSheetBaseTheme.cupertino:
-      return MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
-    case MarkdownStyleSheetBaseTheme.material:
-    default:
-      return MarkdownStyleSheet.fromTheme(Theme.of(context));
   }
 };
 
