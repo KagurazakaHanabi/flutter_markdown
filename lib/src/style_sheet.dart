@@ -448,7 +448,13 @@ class MarkdownStyleSheet {
   /// The decoration to use for `hr` elements.
   final Decoration horizontalRuleDecoration;
 
-  // The text scale factor to use in textual elements
+  /// The text scale factor to use in textual elements.
+  ///
+  /// Because of [SelectableText] is missing textScaleFactor argument, if
+  /// [MarkdownWidget.selectable] is true, it's will be ignored.
+  ///
+  /// Defaults to [MediaQueryData.textScaleFactor] obtained from the ambient
+  /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
   final double textScaleFactor;
 
   /// A [Map] from element name to the corresponding [TextStyle] object.
