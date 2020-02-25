@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:meta/meta.dart';
 
-import '_functions_io.dart' if (dart.library.html) '_functions_web.dart';
 import 'builder.dart';
 import 'style_sheet.dart';
 
@@ -20,7 +19,7 @@ typedef void MarkdownTapLinkCallback(String href);
 /// Signature for custom image widget.
 ///
 /// Used by [MarkdownWidget.imageBuilder]
-typedef Widget MarkdownImageBuilder(Uri uri);
+typedef Widget MarkdownImageBuilder(Uri uri, double width, double height);
 
 /// Signature for custom checkbox widget.
 ///
