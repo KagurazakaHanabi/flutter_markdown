@@ -289,7 +289,6 @@ class MarkdownBody extends MarkdownWidget {
     MarkdownCheckboxBuilder checkboxBuilder,
     Map<String, MarkdownElementBuilder> builders = const {},
     this.shrinkWrap = true,
-    this.fitContent = true,
   }) : super(
           key: key,
           data: data,
@@ -308,15 +307,12 @@ class MarkdownBody extends MarkdownWidget {
   /// See [ScrollView.shrinkWrap]
   final bool shrinkWrap;
 
-  /// Whether to allow the widget to fit the child content.
-  final bool fitContent;
-
   @override
   Widget build(BuildContext context, List<Widget> children) {
     if (children.length == 1) return children.single;
     return Column(
       mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      crossAxisAlignment: fitContent ? CrossAxisAlignment.start : CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: children,
     );
   }

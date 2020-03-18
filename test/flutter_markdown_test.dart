@@ -16,9 +16,9 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:mockito/mockito.dart';
 
 void main() {
-  TextTheme textTheme = Typography(platform: TargetPlatform.android)
+  TextTheme textTheme = Typography.material2014(platform: TargetPlatform.android)
       .black
-      .merge(TextTheme(body1: TextStyle(fontSize: 12.0)));
+      .merge(TextTheme(bodyText2: TextStyle(fontSize: 12.0)));
 
   testWidgets('Simple string', (WidgetTester tester) async {
     await tester.pumpWidget(_boilerplate(const MarkdownBody(data: 'Hello')));
@@ -608,7 +608,7 @@ void main() {
 
     testWidgets(' - imageBuilder', (WidgetTester tester) async {
       final String data = '![alt](https://img.png)';
-      final MarkdownImageBuilder builder = (_) => Image.asset('assets/logo.png');
+      final MarkdownImageBuilder builder = (_, __, ___) => Image.asset('assets/logo.png');
 
       await tester.pumpWidget(_boilerplate(Markdown(data: data, imageBuilder: builder)));
 
