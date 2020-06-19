@@ -93,9 +93,24 @@ This is an example of how to create your own Markdown widget:
 Enjoy!
 
 [Google]: https://www.google.com/
+
+## Line Breaks
+
+This is an example of how to create line breaks (tab or two whitespaces):
+
+line 1
+  
+   
+line 2
+  
+  
+  
+line 3
 """;
 
 void main() {
+  final controller = ScrollController();
+
   runApp(
     MaterialApp(
       title: "Markdown Demo",
@@ -105,10 +120,16 @@ void main() {
         ),
         body: SafeArea(
           child: Markdown(
+            controller: controller,
             selectable: true,
             data: _markdownData,
             imageDirectory: 'https://raw.githubusercontent.com',
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.arrow_upward),
+          onPressed: () => controller.animateTo(0,
+              duration: Duration(seconds: 1), curve: Curves.easeOut),
         ),
       ),
     ),

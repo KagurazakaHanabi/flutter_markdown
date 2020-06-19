@@ -1,3 +1,32 @@
+## 0.4.2
+
+ * Fix parsing of image caption & alt attributes
+ * Fix baseline alignment in lists
+ * Support `LineBreakSyntax`
+
+## 0.4.1
+
+ * Downgrade Flutter minimum from 1.17.1 to 1.17.0 for Pub
+
+## 0.4.0
+
+ * Updated for Flutter 1.17
+ * Ignore newlines in paragraphs
+ * Improve handling of horizontal rules
+
+## 0.3.5
+
+ * Fix hardcoded colors and improve Darktheme
+ * Fix text alignment when formatting is involved
+
+## 0.3.4
+
+ * Add support for text paragraphs and blockquotes.
+
+## 0.3.3
+
+ * Add the ability to control the scroll position of the `MarkdownWidget`.
+
 ## 0.3.2
 
  * Uplift `package:markdown` dependency version to enable deleting HTML unescape URI workaround
@@ -21,8 +50,8 @@ See [flutter/flutter_markdown issue #156](https://github.com/flutter/flutter_mar
 
 ## 0.3.0
 
- * Supporting GitHub flavoured Markdown
- * Supporting strikethrough
+ * Support GitHub flavoured Markdown
+ * Support strikethrough
  * Convert TextSpan to use new InlineSpan API
 
 ## 0.2.0

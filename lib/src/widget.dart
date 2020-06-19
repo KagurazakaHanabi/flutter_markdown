@@ -20,7 +20,7 @@ typedef void MarkdownTapLinkCallback(String href);
 /// Signature for custom image widget.
 ///
 /// Used by [MarkdownWidget.imageBuilder]
-typedef Widget MarkdownImageBuilder(Uri uri);
+typedef Widget MarkdownImageBuilder(Uri uri, String title, String alt);
 
 /// Signature for custom checkbox widget.
 ///
@@ -127,7 +127,8 @@ abstract class MarkdownWidget extends StatefulWidget {
   _MarkdownWidgetState createState() => _MarkdownWidgetState();
 }
 
-class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuilderDelegate {
+class _MarkdownWidgetState extends State<MarkdownWidget>
+    implements MarkdownBuilderDelegate {
   List<Widget> _children;
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
@@ -140,7 +141,8 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
   @override
   void didUpdateWidget(MarkdownWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.data != oldWidget.data || widget.styleSheet != oldWidget.styleSheet) {
+    if (widget.data != oldWidget.data ||
+        widget.styleSheet != oldWidget.styleSheet) {
       _parseMarkdown();
     }
   }
@@ -162,7 +164,12 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
 
     _disposeRecognizers();
 
-    final List<String> lines = widget.data.split(RegExp(r'\r?\n'));
+    /// FIXME: Enhance it using a single RegEx
+    final List<String> lines = widget.data
+        .replaceAll(RegExp(r'[ ]{2}(\r?\n)'), '  &amp;')
+        .split(RegExp(r'\r?\n'))
+        .map((e) => e?.replaceAll(RegExp(r'  &amp;'), '  \n'))
+        .toList();
     final md.Document document = md.Document(
       extensionSet: widget.extensionSet ?? md.ExtensionSet.gitHubFlavored,
       inlineSyntaxes: [TaskListSyntax()],
@@ -182,7 +189,8 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
 
   void _disposeRecognizers() {
     if (_recognizers.isEmpty) return;
-    final List<GestureRecognizer> localRecognizers = List<GestureRecognizer>.from(_recognizers);
+    final List<GestureRecognizer> localRecognizers =
+        List<GestureRecognizer>.from(_recognizers);
     _recognizers.clear();
     for (GestureRecognizer recognizer in localRecognizers) recognizer.dispose();
   }
@@ -260,7 +268,8 @@ class MarkdownBody extends MarkdownWidget {
     if (children.length == 1) return children.single;
     return Column(
       mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      crossAxisAlignment: fitContent ? CrossAxisAlignment.start : CrossAxisAlignment.stretch,
+      crossAxisAlignment:
+          fitContent ? CrossAxisAlignment.start : CrossAxisAlignment.stretch,
       children: children,
     );
   }
@@ -290,6 +299,7 @@ class Markdown extends MarkdownWidget {
     MarkdownImageBuilder imageBuilder,
     MarkdownCheckboxBuilder checkboxBuilder,
     this.padding = const EdgeInsets.all(16.0),
+    this.controller,
     this.physics,
     this.shrinkWrap = false,
   }) : super(
@@ -309,6 +319,11 @@ class Markdown extends MarkdownWidget {
   /// The amount of space by which to inset the children.
   final EdgeInsets padding;
 
+  /// An object that can be used to control the position to which this scroll view is scrolled.
+  ///
+  /// See also: [ScrollView.controller]
+  final ScrollController controller;
+
   /// How the scroll view should respond to user input.
   ///
   /// See also: [ScrollView.physics]
@@ -324,6 +339,7 @@ class Markdown extends MarkdownWidget {
   Widget build(BuildContext context, List<Widget> children) {
     return ListView(
       padding: padding,
+      controller: controller,
       physics: physics,
       shrinkWrap: shrinkWrap,
       children: children,
