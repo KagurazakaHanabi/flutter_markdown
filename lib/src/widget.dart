@@ -198,11 +198,11 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
         break;
       case MarkdownStyleSheetBaseTheme.automatic:
       default:
-        final ThemeData materialTheme = Theme.of(context, shadowThemeOnly: true);
+        final ThemeData materialTheme = Theme.of(context);
         if (materialTheme == null) {
           fallbackStyleSheet = MarkdownStyleSheet.fromCupertinoTheme(CupertinoTheme.of(context));
         } else {
-          fallbackStyleSheet = MarkdownStyleSheet.fromTheme(Theme.of(context));
+          fallbackStyleSheet = MarkdownStyleSheet.fromTheme(materialTheme);
         }
         break;
     }
